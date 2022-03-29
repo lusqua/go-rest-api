@@ -29,9 +29,19 @@ func Db_connect() *mongo.Client {
 
 	log.Println("Connected to MongoDB!")
 
+	Collections()
+
 	return client
 }
 
 var Client *mongo.Client
 
 var Contacts *mongo.Collection
+var Users *mongo.Collection
+var Connections *mongo.Collection
+
+func Collections() {
+	Contacts = Client.Database("contacts").Collection("contacts")
+	Users = Client.Database("contacts").Collection("users")
+	Connections = Client.Database("contacts").Collection("connections")
+}

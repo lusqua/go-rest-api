@@ -20,7 +20,5 @@ func main() {
 	log.Println("Iniciando API")
 	database.Client = database.Db_connect()
 
-	database.Contacts = database.Client.Database("my_agenda").Collection("contacts")
-
 	routes.HandleRequest()
 }
