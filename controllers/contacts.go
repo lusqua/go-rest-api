@@ -30,10 +30,12 @@ func GetContacts(w http.ResponseWriter, r *http.Request) {
 	
 	json.NewEncoder(w).Encode(contacts_list)
 }
+
+
 func GetContact(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
-	contacts := models.Find_Contact_by_name(params["name"])
+	contacts := models.FindContact(params["name"])
 
 	if len(contacts) == 0 {
 		w.WriteHeader(http.StatusNotFound)
@@ -43,12 +45,13 @@ func GetContact(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(contacts)
 }
 
+
 func CreateContact(w http.ResponseWriter, r *http.Request) {
 	var newContact models.Contato
 
 	_ = json.NewDecoder(r.Body).Decode(&newContact)
 
-	contact := models.Find_Contact_by_name(newContact.Name)
+	contact := models.FindContact(newContact.Name)
 
 	if len(contact) > 1 {
 		w.WriteHeader(http.StatusConflict)
@@ -64,10 +67,12 @@ func CreateContact(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(insertResult)
 }
+
+
 func DeleteContact(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
-	contact := models.Find_Contact_by_name(params["name"])
+	contact := models.FindContact(params["name"])
 
 	if len(contact) == 0 {
 		w.WriteHeader(http.StatusNotFound)
