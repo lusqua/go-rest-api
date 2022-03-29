@@ -33,7 +33,7 @@ func GetContacts(w http.ResponseWriter, r *http.Request) {
 func GetContact(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
-	contacts := Find_Contact_by_name(params["name"])
+	contacts := models.Find_Contact_by_name(params["name"])
 
 	if len(contacts) == 0 {
 		w.WriteHeader(http.StatusNotFound)
@@ -48,7 +48,7 @@ func CreateContact(w http.ResponseWriter, r *http.Request) {
 
 	_ = json.NewDecoder(r.Body).Decode(&newContact)
 
-	contact := Find_Contact_by_name(newContact.Name)
+	contact := models.Find_Contact_by_name(newContact.Name)
 
 	if len(contact) > 1 {
 		w.WriteHeader(http.StatusConflict)
@@ -67,7 +67,7 @@ func CreateContact(w http.ResponseWriter, r *http.Request) {
 func DeleteContact(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
-	contact := Find_Contact_by_name(params["name"])
+	contact := models.Find_Contact_by_name(params["name"])
 
 	if len(contact) == 0 {
 		w.WriteHeader(http.StatusNotFound)
@@ -92,21 +92,4 @@ func DeleteContact(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.NewEncoder(w).Encode(res)
-}
-
-func Find_Contact_by_name(name string) []bson.M {
-
-	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
-	defer cancel()
-
-	filterCursor, err := database.Contacts.Find(ctx, bson.M{"name": name})
-	if err != nil {
-			log.Fatal(err)
-	}
-
-	var contactsFiltered []bson.M
-	if err = filterCursor.All(ctx, &contactsFiltered); err != nil {
-			log.Fatal(err)
-	}
-	return contactsFiltered
 }
