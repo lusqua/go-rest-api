@@ -6,7 +6,7 @@ require github.com/gorilla/mux v1.8.0
 
 require go.mongodb.org/mongo-driver v1.8.4
 
-require golang.org/x/crypto v0.0.0-20220321153916-2c7772ba3064 // indirect
+require golang.org/x/crypto v0.0.0-20220321153916-2c7772ba3064
 
 require (
 	github.com/go-stack/stack v1.8.0 // indirect
